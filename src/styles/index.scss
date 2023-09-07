@@ -1,0 +1,50 @@
+// import dark theme
+@use 'element-plus/theme-chalk/src/dark/css-vars.scss' as *;
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.el-collapse-item__header {
+  font-weight: normal;
+}
+
+.el-form-item {
+  margin-bottom: 12px;
+}
+
+.el-button-group {
+  .el-button.active {
+    color: var(--el-button-hover-text-color);
+    border-color: var(--el-button-hover-border-color);
+    background-color: var(--el-button-hover-bg-color);
+    outline: none;
+    z-index: 1;
+
+    svg {
+      color: var(--el-button-hover-text-color);
+      fill: var(--el-button-hover-text-color);
+    }
+  }
+}
+
+.el-collapse-item__content {
+  padding-bottom: 10px;
+}
+
+.el-color-picker {
+  &:hover:not(.is-disabled) {
+    .el-color-picker__trigger {
+      border: none;
+    }
+  }
+  .el-color-picker__trigger {
+    border: none;
+  }
+}
