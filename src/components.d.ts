@@ -10,7 +10,7 @@ declare module 'vue' {
     BackgroundSetting: typeof import('./components/EditorRightPanel/components/StylePanel/components/BackgroundSetting/BackgroundSetting.vue')['default']
     BorderRadiusSetting: typeof import('./components/EditorRightPanel/components/StylePanel/components/BorderRadiusSetting/BorderRadiusSetting.vue')['default']
     BorderSetting: typeof import('./components/EditorRightPanel/components/StylePanel/components/BorderSetting/BorderSetting.vue')['default']
-    ContextMenu: typeof import('./components/EditorLeftPanel/components/OutlinePane/components/ContextMenu/ContextMenu.vue')['default']
+    ContextMenu: typeof import('./components/EditorLeftPanel/components/OutlinePane/components/ContextMenu/index.vue')['default']
     EditorLeftPanel: typeof import('./components/EditorLeftPanel/EditorLeftPanel.vue')['default']
     EditorMain: typeof import('./components/EditorMain/EditorMain.vue')['default']
     EditorRightPanel: typeof import('./components/EditorRightPanel/EditorRightPanel.vue')['default']

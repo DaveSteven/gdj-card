@@ -1,58 +1,43 @@
-import { createApp, defineComponent, h, onMounted, ref } from 'vue';
+import { createVNode, render, ComponentPublicInstance } from 'vue';
+import ContextMenuConstructor from './index.vue';
+import { hasOwn } from '@vue/shared';
 
-export function createContextMenu() {
-  const contextMenuComponent = defineComponent({
-    name: 'ContextMenu',
-    setup(_, { expose }) {
-      const menuRef = ref();
-      const isOpened = ref(true);
+const initInstance = (props: any, container: HTMLElement) => {
+  const vnode = createVNode(ContextMenuConstructor, props);
+  render(vnode, container);
+  document.body.appendChild(container);
+  return vnode.component;
+};
 
-      const handleClickOut = (e: Event) => {
-        console.log(menuRef.value);
-        if (
-          !e.target ||
-          !menuRef.value ||
-          menuRef.value.contains(e.target as HTMLElement)
-        ) {
-          return;
-        }
-        if (isOpened.value) {
-          e.preventDefault();
-          vm.$el?.parentNode?.removeChild(vm.$el);
-          isOpened.value = false;
-        }
-      };
+const genContainer = () => {
+  return document.createElement('div');
+};
 
-      onMounted(() => {
-        document.body.addEventListener('click', handleClickOut, true);
-      });
+const mergeProps = (vm: ComponentPublicInstance, options: any) => {
+  for (const prop in options) {
+    if (hasOwn(options, prop) && !hasOwn(vm.$props, prop)) {
+      vm[prop as keyof ComponentPublicInstance] = options[prop];
+    }
+  }
+};
 
-      return () => {
-        const menus = h(
-          'div',
-          {
-            ref: menuRef,
-            '^role': 'contextmenu',
-            class: 'bg-white',
-          },
-          h('ul', null, h('li', '选中'))
-        );
-        return menus;
-      };
-    },
-  });
+const registerContextMenu = (options: any) => {
+  const container = genContainer();
+  const instance = initInstance(options, container);
+  const vm = instance!.proxy as ComponentPublicInstance<{
+    isOpened: boolean;
+  }>;
 
-  const contextMenuInstance = createApp(contextMenuComponent);
-  const vm = contextMenuInstance.mount(document.createElement('div'));
+  mergeProps(vm, options);
+  return vm;
+};
 
-  const open = () => {};
-
-  const close = () => {
-    contextMenuInstance.unmount();
-  };
+export default (options: any) => {
+  const vm = registerContextMenu(options);
 
   return {
-    vm,
-    close,
-  };
-}
+    show: () => {
+      vm.isOpened = true;
+    }
+  }
+};

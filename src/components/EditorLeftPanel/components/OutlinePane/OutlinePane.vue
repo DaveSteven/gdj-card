@@ -5,7 +5,7 @@
       <el-tree
         :data="tree"
         node-key="uid"
-        :current-node-key="currentUid"
+        :current-node-key="focusUid"
         default-expand-all
         highlight-current
         :expand-on-click-node="false"
@@ -21,12 +21,11 @@ import { NodeMap, NodeTree, nodeArrayToTree } from '@/utils/renderer';
 import { ref, watch, render, h, onMounted } from 'vue';
 import { useNodeStore } from '@/stores';
 import { storeToRefs } from 'pinia';
-import { createContextMenu } from './components/ContextMenu/ContextMenu';
+import ContextMenu from './components/ContextMenu/ContextMenu';
 
 const tree = ref<NodeTree[]>();
 const nodeStore = useNodeStore();
-const { currentUid, nodeMap } = storeToRefs(nodeStore);
-const menuOpened = ref(false);
+const { focusUid, nodeMap } = storeToRefs(nodeStore);
 
 watch(
   () => nodeMap.value,
@@ -48,8 +47,12 @@ const nodeClick = (node: NodeTree): void => {
 };
 
 const handleContextmenu = (event: MouseEvent, data, node, component) => {
-  const contextmenu = createContextMenu();
-  document.body.appendChild(contextmenu.vm.$el);
+  ContextMenu({
+    position: {
+      x: event.pageX,
+      y: event.pageY,
+    },
+  }).show();
 };
 </script>
 
